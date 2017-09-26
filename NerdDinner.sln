@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NerdDinner", "NerdDinner\NerdDinner.csproj", "{5CBB15DD-0C18-4412-B13B-3096919FB864}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NerdDinner.Tests", "NerdDinner.Tests\NerdDinner.Tests.csproj", "{AB94132A-5387-4D4D-B49A-CC8AE24BACF6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5CBB15DD-0C18-4412-B13B-3096919FB864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CBB15DD-0C18-4412-B13B-3096919FB864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CBB15DD-0C18-4412-B13B-3096919FB864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CBB15DD-0C18-4412-B13B-3096919FB864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB94132A-5387-4D4D-B49A-CC8AE24BACF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB94132A-5387-4D4D-B49A-CC8AE24BACF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB94132A-5387-4D4D-B49A-CC8AE24BACF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB94132A-5387-4D4D-B49A-CC8AE24BACF6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {863AFD05-8F6B-4922-9780-1D951A62A434}
+	EndGlobalSection
+EndGlobal
