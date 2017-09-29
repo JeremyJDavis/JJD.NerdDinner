@@ -5,15 +5,14 @@ namespace NerdDinner.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<NerdDinner.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<NerdDinner.Models.NerdDinnersDBContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            ContextKey = "NerdDinner.Models.ApplicationDbContext";
         }
 
-        protected override void Seed(NerdDinner.Models.ApplicationDbContext context)
+        protected override void Seed(NerdDinner.Models.NerdDinnersDBContext context)
         {
             //  This method will be called after migrating to the latest version.
 

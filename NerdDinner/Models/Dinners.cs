@@ -36,12 +36,9 @@ namespace NerdDinner.Models
         public float Latitude { get; set; }
         [Required]
         public float Longitude { get; set; }
-
+        public virtual ICollection<RSVP> RSVPs { get; set; }
 
     }
 
-    public class NerdDinnerDBContext : DbContext
-    {
-        public DbSet<Dinner> Dinners { get; set; }
-    }
+    
 }

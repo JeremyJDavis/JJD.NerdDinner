@@ -12,7 +12,9 @@ namespace NerdDinner.Models
         public int RsvpId { get; set; }
         public int DinnerId { get; set; }
         [Required]
-        [StringLength(30)]
-        public string AttendeeName { get; set; }
+        [StringLength(40)]
+        public string AttendeeEmail { get; set; }
+
+        public virtual Dinner Dinner { get; set; }
     }
 }
