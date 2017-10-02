@@ -1,0 +1,78 @@
+﻿@model NerdDinner.Models.Dinner
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create a Dinner</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <div class="editor-label">
+            @Html.LabelFor(dinner => dinner.Title)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(dinner => dinner.Title)
+            @Html.ValidationMessageFor(dinner => dinner.Title)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(dinner => dinner.EventDate)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(dinner => dinner.EventDate)
+            @Html.ValidationMessageFor(dinner => dinner.EventDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(dinner => dinner.Description)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(dinner => dinner.Description)
+            @Html.ValidationMessageFor(dinner => dinner.Description)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(dinner => dinner.ContactPhone)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(dinner => dinner.ContactPhone)
+            @Html.ValidationMessageFor(dinner => dinner.ContactPhone)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(dinner => dinner.Address)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(dinner => dinner.Address)
+            @Html.ValidationMessageFor(dinner => dinner.Address)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(dinner => dinner.Country)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(dinner => dinner.Country)
+            @Html.ValidationMessageFor(dinner => dinner.Country)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(dinner => dinner.HostedBy)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(dinner => dinner.HostedBy)
+            @Html.ValidationMessageFor(dinner => dinner.HostedBy)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+
+    </fieldset>
+} 

@@ -20,20 +20,22 @@ namespace NerdDinner.Models
             return db.Dinners.SingleOrDefault(d => d.DinnerId == id);
         }
 
-        //public void Add(Dinner dinner)
-        //{
-        //    db.Dinners.InsertOnSubmit(dinner);
-        //}
+        public void Add(Dinner dinner)
+        {
+            db.Dinners.InsertOnSubmit(dinner);
+        }
 
-        //public void Delete(Dinner dinner)
-        //{
-        //    db.RSVPs.DeleteAllOnSubmit(dinner.RSVPs);
-        //    db.Dinners.DeleteOnSubmit(dinner);
-        //}
+        public void Delete(Dinner dinner)
+        {
+            db.RSVPs.DeleteAllOnSubmit(dinner.RSVPs);
+            db.Dinners.DeleteOnSubmit(dinner);
+        }
 
-        //public void Save()
-        //{
-        //    db.SubmitChanges();
-        //}
+        public void Save()
+        {
+            db.SubmitChanges();
+        }
+
+
     }
 }

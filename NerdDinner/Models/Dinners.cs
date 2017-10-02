@@ -32,10 +32,10 @@ namespace NerdDinner.Models
         [Required]
         [StringLength(30)]
         public string Country { get; set; }
-        [Required]
-        public float Latitude { get; set; }
-        [Required]
-        public float Longitude { get; set; }
+        //[Required]
+        //public float Latitude { get; set; }
+        //[Required]
+        //public float Longitude { get; set; }
         public virtual ICollection<RSVP> RSVPs { get; set; }
 
     }
