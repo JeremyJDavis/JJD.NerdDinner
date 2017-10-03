@@ -17,11 +17,8 @@ namespace NerdDinner.Models
         public string Title { get; set; }
         [Required(ErrorMessage = "When is your dinner?")]
         public DateTime EventDate { get; set; }
-        [Required(ErrorMessage = "What's all this then?")]
-        [StringLength(256)]
-        public string Description { get; set; }
-        [Required(ErrorMessage = "Who's in charge here?")]
-        [StringLength(20, ErrorMessage = "Surely the name can be shorter...")]
+        [Required(ErrorMessage = "Need email please")]
+        [RegularExpression(".+\\@.+\\..+", ErrorMessage = "Please enter a valid email address")]
         public string HostedBy { get; set; }
         [Required(ErrorMessage = "Enter a phone number please")]
         [StringLength(20, ErrorMessage = "Phone numbers are shorter than that...")]
@@ -32,10 +29,6 @@ namespace NerdDinner.Models
         [Required]
         [StringLength(30)]
         public string Country { get; set; }
-        //[Required]
-        //public float Latitude { get; set; }
-        //[Required]
-        //public float Longitude { get; set; }
         public virtual ICollection<RSVP> RSVPs { get; set; }
 
     }
