@@ -200,6 +200,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DinnersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -277,6 +278,12 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Create.cshtml" />
+    <Content Include="Views\Dinners\Create.cshtml" />
+    <Content Include="Views\Dinners\Delete.cshtml" />
+    <Content Include="Views\Dinners\Details.cshtml" />
+    <Content Include="Views\Dinners\Edit.cshtml" />
+    <Content Include="Views\Dinners\Index.cshtml" />
+    <Content Include="Views\Dinners\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
