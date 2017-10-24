@@ -392,7 +392,7 @@ namespace NerdDinner.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Dinners");
         }
 
         //
@@ -449,7 +449,7 @@ namespace NerdDinner.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Dinners");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

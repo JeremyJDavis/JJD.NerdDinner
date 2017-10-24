@@ -72,7 +72,7 @@ namespace NerdDinner.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DinnerId,Title,EventDate,HostedBy,ContactPhone,Address,Country")] Dinner dinner)
+        public ActionResult Create([Bind(Include = "DinnerId,Title,EventDate,ContactEmail,ContactPhone,Address,Country")] Dinner dinner)
         {
             if (ModelState.IsValid)
             {
@@ -104,7 +104,7 @@ namespace NerdDinner.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DinnerId,Title,EventDate,HostedBy,ContactPhone,Address,Country")] Dinner dinner)
+        public ActionResult Edit([Bind(Include = "DinnerId,Title,EventDate,ContactEmail,ContactPhone,Address,Country")] Dinner dinner)
         {
             if (ModelState.IsValid)
             {
