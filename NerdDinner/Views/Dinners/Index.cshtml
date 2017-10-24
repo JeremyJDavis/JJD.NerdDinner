@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NerdDinner.Models.Dinner>
+﻿@model NerdDinner.Helpers.PaginatedList<NerdDinner.Models.Dinner>
 
 @{
     ViewBag.Title = "Index";
@@ -22,6 +22,17 @@
     }
 </ul>
 
-<p>
+@*<p>
     @Html.ActionLink("Create a Dinner", "Create")
-</p>
+</p>*@
+
+@{
+    if (Model.HasPreviousPage())
+    {
+        @Html.RouteLink("<<<", "UpcomingDinners", new {page = (Model.PageIndex - 1)});
+    }
+    if (Model.HasNextPage())
+    {
+        @Html.RouteLink(">>>","UpcomingDinners", new { page = (Model.PageIndex + 1)});
+    }
+}

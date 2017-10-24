@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using NerdDinner.Helpers;
 using NerdDinner.Models;
 
 namespace NerdDinner.Controllers
@@ -14,25 +15,50 @@ namespace NerdDinner.Controllers
     {
         private NerdDinnersDBContext db = new NerdDinnersDBContext();
 
-        // GET: Dinners
-        public ActionResult Index()
+        private IDinnerRepository iDinnerRepos;
+
+        public DinnersController() : this(new DinnerRepository())
         {
-            return View(db.Dinners.ToList());   
+        }
+
+        public DinnersController(IDinnerRepository repository)
+        {
+            iDinnerRepos = repository;
+        }
+
+        // GET: Dinners
+        public ActionResult Index(int? page)
+        {
+            const int pageSize = 10;
+
+            var upcomingDinners = iDinnerRepos.FindUpcomingDinners();
+            var paginatedDinners = new PaginatedList<Dinner>(upcomingDinners, page ?? 0, pageSize);
+
+            return View(paginatedDinners);
+
+
+            //return View(db.Dinners.ToList());   
         }
 
         // GET: Dinners/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Dinner dinner = db.Dinners.Find(id);
-            if (dinner == null)
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Dinner dinner = db.Dinners.Find(id);
+            //if (dinner == null)
+            //{
+            //    return View("NotFound");
+            //}
+            //return View(dinner);
+            var singleDinner = iDinnerRepos.GetDinner(id);
+            if (singleDinner == null)
             {
                 return View("NotFound");
             }
-            return View(dinner);
+            return View(singleDinner);
         }
 
         // GET: Dinners/Create

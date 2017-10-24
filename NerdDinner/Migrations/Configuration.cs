@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using NerdDinner.Models;
+
 namespace NerdDinner.Migrations
 {
     using System;
@@ -12,20 +15,53 @@ namespace NerdDinner.Migrations
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(NerdDinner.Models.NerdDinnersDBContext context)
-        {
-            //  This method will be called after migrating to the latest version.
+        //protected override void Seed(NerdDinner.Models.NerdDinnersDBContext context)
+        //{
+        //    var countires = new List<Country>
+        //    {
+        //        new Country {Name = "USA"},
+        //        new Country {Name = "Canada"},
+        //        new Country {Name = "Brazil"}
+        //    };
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
-        }
+        //    var dinners = new List<Dinner>
+        //    {
+        //        new Dinner
+        //        {
+        //            Title = "First Dinner",
+        //            EventDate = DateTime.Parse("10/20/2017"),
+        //            ContactEmail = "jdavis@paraport.com",
+        //            ContactPhone = "(206) 555-1212",
+        //            Address = "1918 Eigth Ave",
+        //            Country = countires.Single(c => c.Name == "USA"),
+        //            Latitude = 41.2,
+        //            Longitude = -122.3
+        //        },
+        //        new Dinner
+        //        {
+        //            Title = "Porkacalypse",
+        //            EventDate = DateTime.Parse("12/1/2017"),
+        //            ContactEmail = "jdavis@paraport.com",
+        //            ContactPhone = "(206) 555-1212",
+        //            Address = "1918 Eigth Ave",
+        //            Country = countires.Single(c => c.Name == "Canada"),
+        //            Latitude = 60.5,
+        //            Longitude = -100.5
+        //        },
+        //        new Dinner
+        //        {
+        //            Title = "Chicken Dinner",
+        //            EventDate = DateTime.Parse("12/11/2017"),
+        //            ContactEmail = "jdavis@paraport.com",
+        //            ContactPhone = "(206) 555-1212",
+        //            Address = "1918 Eigth Ave",
+        //            Country = countires.Single(c => c.Name == "Brazil"),
+        //            Latitude = 50.2,
+        //            Longitude = -122.3
+        //        }
+        //    };
+
+        //    dinners.ForEach(d => context.Dinners.Add(d));
+        //}
     }
 }

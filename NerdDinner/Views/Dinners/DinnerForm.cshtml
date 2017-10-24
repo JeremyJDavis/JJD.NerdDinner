@@ -1,28 +1,15 @@
 ﻿@model NerdDinner.Models.Dinner
 
-@{
-    ViewBag.Title = "Create";
-}
-
-<h2>Host a Dinner</h2>
-
-
-@*@{
-    Html.RenderPartial("DinnerForm");
-}*@
-
-
-
-
-
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
+        <h4>Dinner</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.DinnerId)
+
         <div class="form-group">
             @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
