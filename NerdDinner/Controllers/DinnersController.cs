@@ -36,23 +36,13 @@ namespace NerdDinner.Controllers
 
             return View(paginatedDinners);
 
-
-            //return View(db.Dinners.ToList());   
+            
         }
 
         // GET: Dinners/Details/5
         public ActionResult Details(int id)
         {
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //Dinner dinner = db.Dinners.Find(id);
-            //if (dinner == null)
-            //{
-            //    return View("NotFound");
-            //}
-            //return View(dinner);
+
             var singleDinner = iDinnerRepos.GetDinner(id);
             if (singleDinner == null)
             {
@@ -62,6 +52,7 @@ namespace NerdDinner.Controllers
         }
 
         // GET: Dinners/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -70,7 +61,7 @@ namespace NerdDinner.Controllers
         // POST: Dinners/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "DinnerId,Title,EventDate,ContactEmail,ContactPhone,Address,Country")] Dinner dinner)
         {
@@ -106,13 +97,30 @@ namespace NerdDinner.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "DinnerId,Title,EventDate,ContactEmail,ContactPhone,Address,Country")] Dinner dinner)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            //    db.Entry(dinner).State = EntityState.Modified;
+            //    db.SaveChanges();
+            //    return RedirectToAction("Index");
+            //}
+            //return View(dinner);
+            //Dinner dinner = Dinner(dinner.DinnerId);
+            if (!dinner.IsHostedBy(User.Identity.Name))
             {
-                db.Entry(dinner).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return View("NotFound");
             }
-            return View(dinner);
+
+            try
+            {
+                UpdateModel(dinner);
+                iDinnerRepos.Save();
+                ViewBag.CountryID = new SelectList(iDinnerRepos.GetCountries(), "CountryID", "Name", dinner.CountryID);
+                return RedirectToAction("Details", new { id = dinner.DinnerId });
+            }
+            catch
+            {
+                return View(new DinnerFormViewModel(dinner));
+            }
         }
 
         // GET: Dinners/Delete/5
