@@ -15,6 +15,10 @@ namespace NerdDinner.Models
         {
             base.InitializeDatabase(context);
 
+        }
+
+        protected override void Seed(NerdDinnersDBContext context)
+        {
             var countires = new List<Country>
             {
                 new Country {Name = "USA"},
@@ -30,10 +34,10 @@ namespace NerdDinner.Models
                     EventDate = DateTime.Parse("11/20/2017"),
                     ContactEmail = "jdavis@paraport.com",
                     ContactPhone = "(206) 555-1212",
-                    Address = "1918 Eigth Ave",
+                    Address = "1918 Eighth Ave",
                     Country = countires.Single(c => c.Name == "USA"),
-                    Latitude = 41.2,
-                    Longitude = -122.3
+                    Latitude = 47.6156899,
+                    Longitude = -122.3381664
                 },
                 new Dinner
                 {
@@ -41,20 +45,20 @@ namespace NerdDinner.Models
                     EventDate = DateTime.Parse("11/21/2017"),
                     ContactEmail = "jdavis@paraport.com",
                     ContactPhone = "(206) 555-1212",
-                    Address = "1918 Eigth Ave",
+                    Address = "1918 Eighth Ave",
                     Country = countires.Single(c => c.Name == "USA"),
-                    Latitude = 45.2,
-                    Longitude = -22.3
+                    Latitude = 47.6156899,
+                    Longitude = -122.3381664
                 },new Dinner
                 {
                     Title = "Porcacalypse",
                     EventDate = DateTime.Parse("12/1/2017"),
                     ContactEmail = "jdavis@paraport.com",
                     ContactPhone = "(206) 555-1212",
-                    Address = "1918 Eigth Ave",
+                    Address = "1918 Eighth Ave",
                     Country = countires.Single(c => c.Name == "Canada"),
-                    Latitude = 60.5,
-                    Longitude = -100.5
+                    Latitude = 47.6156899,
+                    Longitude = -122.3381664
                 },
                 new Dinner
                 {
@@ -62,10 +66,10 @@ namespace NerdDinner.Models
                     EventDate = DateTime.Parse("12/11/2017"),
                     ContactEmail = "jdavis@paraport.com",
                     ContactPhone = "(206) 555-1212",
-                    Address = "1918 Eigth Ave",
+                    Address = "1918 Eighth Ave",
                     Country = countires.Single(c => c.Name == "Brazil"),
-                    Latitude = 50.2,
-                    Longitude = -122.3
+                    Latitude = 47.6156899,
+                    Longitude = -122.3381664
                 }
             };
 

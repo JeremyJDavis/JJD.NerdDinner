@@ -16,7 +16,7 @@ namespace NerdDinner.Models
         [Key]
         public int DinnerId { get; set; }
 
-        [StringLength(60, ErrorMessage = "Make a shorter title")]
+        [StringLength(40, ErrorMessage = "Make a shorter title")]
         [Required(ErrorMessage = "Name your dinner")]
         public string Title { get; set; }
 
