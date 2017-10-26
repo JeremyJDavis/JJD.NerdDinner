@@ -6,7 +6,6 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 
 namespace NerdDinner.Models
 {
@@ -16,7 +15,7 @@ namespace NerdDinner.Models
         [Key]
         public int DinnerId { get; set; }
 
-        [StringLength(40, ErrorMessage = "Make a shorter title")]
+        [StringLength(45, ErrorMessage = "Make a shorter title")]
         [Required(ErrorMessage = "Name your dinner")]
         public string Title { get; set; }
 
@@ -35,9 +34,10 @@ namespace NerdDinner.Models
         [StringLength(50, ErrorMessage = "Can you abreviate that?")]
         public string Address { get; set; }
 
-        //[Required(ErrorMessage = "What country is this?")]
-        //[DisplayName("Country")]
-        public IEnumerable<SelectListItem> CountryID { get; set; }
+        [Required(ErrorMessage = "What country is this?")]
+        [DisplayName("Country")]
+        //public IEnumerable<SelectListItem> CountryID { get; set; }
+        public int CountryID { get; set; }
 
         public virtual Country Country { get; set; }
 

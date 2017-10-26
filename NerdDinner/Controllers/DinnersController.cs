@@ -13,9 +13,9 @@ namespace NerdDinner.Controllers
 {
     public class DinnersController : Controller
     {
-        private NerdDinnersDBContext db = new NerdDinnersDBContext();
+        private readonly NerdDinnersDBContext db = new NerdDinnersDBContext();
 
-        private IDinnerRepository iDinnerRepos;
+        private readonly IDinnerRepository iDinnerRepos;
 
         public DinnersController() : this(new DinnerRepository())
         {
@@ -55,7 +55,13 @@ namespace NerdDinner.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            return View();
+            var dinner = new Dinner
+            {
+                EventDate = DateTime.Today
+            };
+            var dinnerModel = new DinnerFormViewModel(dinner);
+
+            return View(dinnerModel);
         }
 
         // POST: Dinners/Create
@@ -71,8 +77,8 @@ namespace NerdDinner.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(dinner);
+            var dinnerModel = new DinnerFormViewModel(dinner);
+            return View(dinnerModel);
         }
 
         // GET: Dinners/Edit/5
@@ -87,7 +93,8 @@ namespace NerdDinner.Controllers
             {
                 return HttpNotFound();
             }
-            return View(dinner);
+            var dinnerModel = new DinnerFormViewModel(dinner);
+            return View(dinnerModel);
         }
 
         // POST: Dinners/Edit/5

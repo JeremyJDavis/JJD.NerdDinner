@@ -9,15 +9,15 @@ namespace NerdDinner.Models
 {
     public class DinnerFormViewModel
     {
-        NerdDinnersDBContext nerdDinnerDB = new NerdDinnersDBContext();
+        readonly NerdDinnersDBContext nerdDinnerDB = new NerdDinnersDBContext();
 
         public Dinner Dinner{ get; set; }
-        public DropDownList Countries { get; set; }
+        public SelectList Countries { get; set; }
 
         public DinnerFormViewModel(Dinner dinner)
         {
             Dinner = dinner;
-            Countries = new DropDownList();
+            Countries = new SelectList(nerdDinnerDB.Countries, dinner.Country);
         }
     }
 }
