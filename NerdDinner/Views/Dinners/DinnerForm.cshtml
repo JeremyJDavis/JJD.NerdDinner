@@ -15,16 +15,19 @@
             <div>
                 <label>Dinner Title:</label>
             </div>
-            @Html.TextBox("Title", Model.Dinner.Title)
-            @Html.ValidationMessage("Title", "", new { @class = "text-danger" })
+            
+            @Html.HiddenFor(model => model.DinnerId)
+
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
         </p>
 
         <p>
             <div>
                 <label>Event Date:</label>
             </div>
-            @Html.TextBox("EventDate", String.Format("{0:g}", Model.Dinner.EventDate))
-            @Html.ValidationMessage("EventDate", "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.EventDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.EventDate, "", new { @class = "text-danger" })
         </p>
 
 
@@ -32,21 +35,39 @@
             <div>
                 <label>Address:</label>
             </div>
-            @Html.TextBox("Address", Model.Dinner.Address)
-            @Html.ValidationMessage("Address", "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
         </p>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContactPhone, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ContactPhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ContactPhone, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <p>
             <div>
                 <label>Country:</label>
             </div>
-            @Html.DropDownList("CountryID", null, htmlAttributes: new { @class  ="form-control"})
-            @*@Html.TextBox("Country", Model.Dinner.Country)*@
+            
+    
+            @Html.DropDownListFor(model => model.CountryID, Model.Countries, new { onchange = "getAlldata()" })
+            @Html.ValidationMessageFor(model => model.CountryID, "", new { @class = "text-danger" })
         </p>
         
         <p>
-            @Html.Hidden("Latitude", Model.Dinner.Latitude)
-            @Html.Hidden("Longitude", Model.Dinner.Longitude)
+            <div>
+                <label>Latitude:</label>
+            </div>
+            @Html.EditorFor(model => model.Latitude, new {htmlAttributes = new {@class = "form-control"}})
+            @Html.ValidationMessageFor(model => model.Latitude, "", new {@class = "text-danger"})
+            <div>
+                <label>Latitude:</label>
+            </div>
+            @Html.EditorFor(model => model.Longitude, new {htmlAttributes = new {@class = "form-control"}})
+            @Html.ValidationMessageFor(model => model.Longitude, "", new {@class = "text-danger"})
 
         </p>
 
@@ -54,8 +75,8 @@
             <div>
                 <label>Contact Email:</label>
             </div>
-            @Html.TextBox("ContactEmail", Model.Dinner.ContactEmail)
-            @Html.ValidationMessage("ContactEmail", "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.ContactEmail, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ContactEmail, "", new { @class = "text-danger" })
         </p>
         
         <p>
@@ -67,11 +88,11 @@
 
         </div>
 
-        <div id="mapDiv">
+        <!--<div id="mapDiv">
             @{
-                Html.RenderPartial("Map", Model.Dinner);
+//Html.RenderPartial("Map", Model.Dinner);
             }
-        </div>
+        </div>-->
 
 
         <script type="text/javascript">

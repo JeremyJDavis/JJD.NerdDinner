@@ -59,7 +59,19 @@ namespace NerdDinner.Controllers
             {
                 EventDate = DateTime.Today
             };
-            var dinnerModel = new DinnerFormViewModel(dinner);
+            var dinnerModel = new DinnerFormViewModel()
+            {
+                DinnerId = dinner.DinnerId,
+                Title = dinner.Title,
+                Address = dinner.Address,
+                ContactEmail = dinner.ContactEmail,
+                ContactPhone = dinner.ContactPhone,
+                EventDate = dinner.EventDate,
+                Latitude = dinner.Latitude,
+                Longitude = dinner.Longitude,
+                CountryID = dinner.CountryID,
+                Countries = new SelectList(db.Countries, "CountryId", "Name")
+            };
 
             return View(dinnerModel);
         }
@@ -69,15 +81,41 @@ namespace NerdDinner.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DinnerId,Title,EventDate,ContactEmail,ContactPhone,Address,Country")] Dinner dinner)
+        public ActionResult Create(DinnerFormViewModel dinnerFormViewModel)
         {
             if (ModelState.IsValid)
             {
+                var dinner = new Dinner()
+                {
+                    DinnerId = dinnerFormViewModel.DinnerId,
+                    Title = dinnerFormViewModel.Title,
+                    EventDate = dinnerFormViewModel.EventDate,
+                    ContactEmail = dinnerFormViewModel.ContactEmail,
+                    ContactPhone = dinnerFormViewModel.ContactPhone,
+                    Address = dinnerFormViewModel.Address,
+                    CountryID = dinnerFormViewModel.CountryID,
+                    Latitude = dinnerFormViewModel.Latitude,
+                    Longitude = dinnerFormViewModel.Longitude
+                };
+                var countryForDinner = db.Countries.FirstOrDefault(c => c.CountryID == dinnerFormViewModel.CountryID);
+                dinner.Country = countryForDinner;
                 db.Dinners.Add(dinner);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            var dinnerModel = new DinnerFormViewModel(dinner);
+            var dinnerModel = new DinnerFormViewModel()
+            {
+                DinnerId = dinnerFormViewModel.DinnerId,
+                Title = dinnerFormViewModel.Title,
+                Address = dinnerFormViewModel.Address,
+                ContactEmail = dinnerFormViewModel.ContactEmail,
+                ContactPhone = dinnerFormViewModel.ContactPhone,
+                EventDate = dinnerFormViewModel.EventDate,
+                Latitude = dinnerFormViewModel.Latitude,
+                Longitude = dinnerFormViewModel.Longitude,
+                CountryID = dinnerFormViewModel.CountryID,
+                Countries = new SelectList(db.Countries, "CountryId", "Name")
+            };
             return View(dinnerModel);
         }
 
@@ -88,12 +126,24 @@ namespace NerdDinner.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Dinner dinner = db.Dinners.Find(id);
+            Dinner dinner = iDinnerRepos.GetDinner(id ?? 0);
             if (dinner == null)
             {
                 return HttpNotFound();
             }
-            var dinnerModel = new DinnerFormViewModel(dinner);
+            var dinnerModel = new DinnerFormViewModel()
+            {
+                DinnerId = dinner.DinnerId,
+                Title = dinner.Title,
+                Address = dinner.Address,
+                ContactEmail = dinner.ContactEmail,
+                ContactPhone = dinner.ContactPhone,
+                EventDate = dinner.EventDate,
+                Latitude = dinner.Latitude,
+                Longitude = dinner.Longitude,
+                CountryID = dinner.CountryID,
+                Countries = new SelectList(db.Countries, "CountryId", "Name")
+            };
             return View(dinnerModel);
         }
 
@@ -102,7 +152,7 @@ namespace NerdDinner.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DinnerId,Title,EventDate,ContactEmail,ContactPhone,Address,Country")] Dinner dinner)
+        public ActionResult Edit(DinnerFormViewModel dinnerFormViewModel)//[Bind(Include = "DinnerId,Title,EventDate,ContactEmail,ContactPhone,Address,Country")] Dinner dinner)
         {
             //if (ModelState.IsValid)
             //{
@@ -112,6 +162,7 @@ namespace NerdDinner.Controllers
             //}
             //return View(dinner);
             //Dinner dinner = Dinner(dinner.DinnerId);
+            var dinner = iDinnerRepos.GetDinner(dinnerFormViewModel.DinnerId);
             if (!dinner.IsHostedBy(User.Identity.Name))
             {
                 return View("NotFound");
@@ -126,7 +177,20 @@ namespace NerdDinner.Controllers
             }
             catch
             {
-                return View(new DinnerFormViewModel(dinner));
+                var dinnerModel = new DinnerFormViewModel()
+                {
+                    DinnerId = dinnerFormViewModel.DinnerId,
+                    Title = dinnerFormViewModel.Title,
+                    Address = dinnerFormViewModel.Address,
+                    ContactEmail = dinnerFormViewModel.ContactEmail,
+                    ContactPhone = dinnerFormViewModel.ContactPhone,
+                    EventDate = dinnerFormViewModel.EventDate,
+                    Latitude = dinnerFormViewModel.Latitude,
+                    Longitude = dinnerFormViewModel.Longitude,
+                    CountryID = dinnerFormViewModel.CountryID,
+                    Countries = new SelectList(db.Countries, "CountryId", "Name")
+                };
+                return View(dinnerModel);
             }
         }
 
