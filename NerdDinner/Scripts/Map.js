@@ -1,145 +1,115 @@
 ﻿var map = null;
-var points = [];
-var shapes = [];
-var center = null;
+var pushpins = [];
 
-function LoadMap(latitude, longitude, onMapLoaded) {
-    //map = new Microsoft.Maps.Map('#theMap');
-    map = new VEMap('theMap');
-    options = new VEMapOptions();
-    options.EnableBirdsEye = false;
-
-    map.SetDashboardSize(VEDashboardSize.Small);
-    if (onMapLoaded != null) {
-        map.onMapLoaded = onMapLoaded;
-    }
-    if (latitude != null && longitude != null) {
-        center = new VELatLong(latitude, longitude);
-    }
-    map.LoadMap(center,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        options);
-}
-
-function LoadPin(LL, name, description) {
-    var shape = new VEShape(VEShapeType.Pushpin, LL);
-
-    shape.SetTitle("<span class=\"pinTitle\"> " + escape(name) + "</span>");
-    if (description !== undefined) {
-        shape.SetDescription("<p class=\"pinDetails\">" +
-            escape(description) + "</p>");
-    }
-    map.AddShape(shape);
-    points.push(LL);
-    shapes.push(shape);
-}
-
-function FindAddressOnMap(where) {
-    var numberOfResults = 20;
-    var setBestMapView = true;
-    var showResults = true;
-
-    map.Find("", where, null, null, null, numberOfResults, showResults, true, true, setBestMapView, callbackForLocation);
-}
-
-function callbackForLocation(layer, resultsArray, places, hasMore, VEErrorMessage) {
-
-    clearMap();
-
-    if (places == null)
-        return;
-
-    //Make a pushpin for each place we find
-    $.each(places, function (i, item) {
-        description = "";
-        if (item.Description !== undefined) {
-            description = item.Description;
-        }
-        var LL = new VELatLong(item.LatLong.Latitude,
-            item.LatLong.Longitude);
-
-        LoadPin(LL, item.Name, description);
-    });
-
-    //Make sure all pushpins are visible
-    if (points.length > 1) {
-        map.SetMapView(points);
-    }
-
-    //If we've found exactly one place, that's our address.
-    if (points.length === 1) {
-        $("#Latitude").val(points[0].Latitude);
-        $("#Longitude").val(points[0].Longitude);
+function AddMapChildScriptToDocument() {
+    if (!map) {
+        var mapScriptUrl = "http://www.bing.com/api/maps/mapcontrol?onscriptload=LoadMapToPage";
+        var script = document.createElement("script");
+        script.setAttribute("defer", "");
+        script.setAttribute("async", "");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", mapScriptUrl);
+        document.body.appendChild(script);
     }
 }
 
-function clearMap() {
-    map.Clear();
-    points = [];
-    shapes = [];
-}
-
-function FindDinnersGivenLocation(where) {
-    map.Find("", where, null, null, null, null, null, false,
-        null, null, callbackUpdateMapDinners);
-}
-
-function callbackUpdateMapDinners(layer, resultsArray, places, hasMore, VEErrorMessage) {
-
-    $("#dinnerList").empty();
-    clearMap();
-    var center = map.GetCenter();
-
-    $.post("/Search/SearchByLocation",
+function GetMap() {
+    map = new Microsoft.Maps.Map(
+        document.getElementById("theMap"),
         {
-            latitude: center.Latitude,
-            longitude: center.Longitude
-        },
-        function (dinners) {
-            $.each(dinners,
-                function (i, dinner) {
+            credentials: "Ap_yaivH-quNP6hfiluV68u4icLC8_uUT-l4fS1TYABEXTlcm6UmzIHqSf1M8wMi",
+            mapTypeId: Microsoft.Maps.MapTypeId.aerial,
+            zoom: 0
+        });
+}
 
-                    var LL = new VELatLong(dinner.Latitude,
-                        dinner.Longitude,
-                        0,
-                        null);
+function SetMapCenterToAddress(pushpinTitle, address) {
+    var args = { pushpinTitle: pushpinTitle, address: address };
+    ExecuteWithViewLocationFromAddress(address,
+        function (viewLocation, args) {
+            RemovePushpins();
+            AddPushpinToLocation(args.pushpinTitle, args.address, viewLocation.location);
+            map.setView({ bounds: viewLocation.bestView });
+        }, args);
+}
 
-                    var RsvpMessage = "";
+function RemovePushpins() {
+    map.entities.clear();
+    pushpins = [];
+}
 
-                    if (dinner.RSVPCount == 1)
-                        RsvpMessage = "" + dinner.RSVPCount + "RSVP";
-                    else
-                        RsvpMessage = "" + dinner.RSVPCount + "RSVPs";
-
-                    // Add Pin to Map
-                    LoadPin(LL,
-                        '<a href="/Dinners/Details/' + dinner.DinnerID + '">' + dinner.Title + '</a>',
-                        "<p>" + dinner.Description + "</p>" + RsvpMessage);
-
-                    //Add a dinner to the <ul> dinnerList on the right
-                    $('#dinnerList').append($('<li/>')
-                        .attr("class", "dinnerItem")
-                        .append($('<a/>').attr("href",
-                                "/Dinners/Details/" + dinner.DinnerID)
-                            .html(dinner.Title))
-                        .append(" (" + RsvpMessage + ")"));
-                });
-
-            // Adjust zoom to display all the pins we just added.
-            map.SetMapView(points);
-
-            // Display the event's pin-bubble on hover.
-            $(".dinnerItem").each(function (i, dinner) {
-                $(dinner).hover(
-                    function () { map.ShowInfoBox(shapes[i]); },
-                    function () { map.HideInfoBox(shapes[i]); }
-                );
+function AddPushpinsForEventsNearAddress(address) {
+    var args = {};
+    ExecuteWithViewLocationFromAddress(
+        address,
+        function (viewLocation, args) {
+            viewLocation.bestView.zoom = 0;
+            map.setView({ bounds: viewLocation.bestView });
+            var locationData = { latitude: viewLocation.location.latitude, longitude: viewLocation.location.longitude };
+            var jsonLocationData = JSON.stringify(locationData);
+            $.ajax({
+                url: "/Search/SearchByLocation/",
+                contentType: "application/json",
+                type: "POST",
+                data: jsonLocationData,
+                success: AddPushpinsToJsonDinners,
+                error: function (error) { alert(JSON.stringify(error)); }
             });
         },
-        "json");
+        args
+    );
+}
+
+function AddPushpinsToJsonDinners(dinners) {
+    for (var i = 0; i < dinners.length; i++)
+        AddPushpinToJsonDinner(i, dinners[i]);
+}
+
+function AddPushpinToJsonDinner(index, dinner) {
+    var dinnerLocation = new Microsoft.Maps.Location(dinner.Latitude, dinner.Longitude);
+    AddPushpinToLocationForDinner(dinner, dinnerLocation);
+}
+
+function ExecuteWithViewLocationFromAddress(address, toExecute, args) {
+    Microsoft.Maps.loadModule('Microsoft.Maps.Search', function () {
+        var searchManager = new Microsoft.Maps.Search.SearchManager(map);
+        var requestOptions = {
+            bounds: map.getBounds(),
+            where: address,
+            userArgs: args,
+            callback: function (answer, userData) {
+                var viewLocation = {};
+                viewLocation.location = answer.results[0].location;
+                viewLocation.bestView = answer.results[0].bestView;
+                toExecute(viewLocation, this.userArgs);
+            }
+        };
+        searchManager.geocode(requestOptions);
+    });
+}
+
+function AddPushpinToLocation(pushpinTitle, address, location) {
+    var pushpin = new Microsoft.Maps.Pushpin(location, { title: pushpinTitle, subTitle: address });
+    map.entities.push(pushpin);
+    pushpins.push(pushpin);
+    return pushpin;
+}
+
+function AddPushpinToLocationForDinner(dinner, location) {
+    var pushpin = new Microsoft.Maps.Pushpin(location, { title: dinner.Title, subTitle: dinner.Address });
+    pushpin.dinner = dinner;
+    AddDetailsRedirectActionForDinnerPushpinOnClick(pushpin);
+    map.entities.push(pushpin);
+    pushpins.push(pushpin);
+    return pushpin;
+}
+
+function AddDetailsRedirectActionForDinnerPushpinOnClick(pushpin) {
+    Microsoft.Maps.Events.addHandler(pushpin, 'click', RedirectToDetailsPushpinClickEventHandler);
+}
+
+function RedirectToDetailsPushpinClickEventHandler(event) {
+    var pushpin = event.target;
+    var url = "/Dinners/Details?id=__id__";
+    window.location.href = url.replace('__id__', pushpin.dinner.DinnerId);
 }

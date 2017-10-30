@@ -1,31 +1,15 @@
-﻿@model NerdDinner.Models.Dinner
+﻿@model NerdDinner.Models.DinnerFormViewModel
+<script type="text/javascript" src="/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="/Scripts/Map.js"></script>
 
-
-<script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.2" type="text/javascript"></script>
-<script src="/Scripts/Map.js" type="text/javascript"></script>
-
-
-
-<div id="theMap" style="position: relative; width: 600px;height: 400px"></div>
-
-<script type="text/javascript">
+<div id="theMap" style="position:relative;width:800px;height:600px;left:50px;bottom:125px;float:right"></div>
+<script>
     $(document).ready(function() {
-        var latitude = @Model.Latitude;
-        var longitude = @Model.Longitude;
-
-        if ((latitude == 0) || (longitude == 0)) {
-            LoadMap();
-        } else {
-            LoadMap(latitude, longitude, mapLoaded);
-            mapLoaded();
-        }
+        AddMapChildScriptToDocument();
     });
 
-    function mapLoaded() {
-        var title = "@Html.Encode(Model.Title)";
-        var address = "@Html.Encode(Model.Address)";
-
-        LoadPin(center, title, address);
-        map.SetZoomLevel(14);
+    function LoadMapToPage() {
+        GetMap();
+        SetMapCenterToAddress("@Model.Title", "@Model.Address");
     }
 </script>

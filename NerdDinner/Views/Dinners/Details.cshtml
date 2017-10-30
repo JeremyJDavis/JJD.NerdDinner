@@ -1,90 +1,38 @@
-﻿@using NerdDinner.Models
-@model NerdDinner.Models.Dinner
+﻿@model NerdDinner.Models.DinnerFormViewModel
 
 @{
     ViewBag.Title = "Details";
 }
 
-<script src="/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
-<script src="/Scripts/jquery.validate-vsdoc.js" type="text/javascript"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#rsvpmsg").click(function () {
-
-            $.ajax({
-                type: "POST",
-                url: '/RSVP/Register/' + @Model.DinnerId,
-                success: function(data) {
-                    $("#rsvpmsg").html(data);
-                    $("#rsvpmsg").css("color", "red");
-                    $("#rsvpmsg").animate({ "font-size": "1.5em" }, 400);
-                }
-            });
-            return false;
-        });
-    });
-
-
-</script>
-
-
 <h2>Details</h2>
 
 <div>
+    <h4>@Model.Title</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EventDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EventDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Country)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Country.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ContactEmail)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ContactEmail)
-        </dd>
-
-       
-
-    </dl>
+    <p>
+        <strong>When: </strong>
+        @Html.Encode(@Model.EventDate)
+    </p>
+    <p>
+        <strong>Where: </strong>
+        @Html.Encode(@Model.Address)
+    </p>
+    <p>
+        <strong>Organizer: </strong>
+        @Html.Encode(@Model.ContactEmail)
+        (@Html.Encode(@Model.ContactPhone))
+    </p>
 </div>
-<p>
-    @{
-        Html.RenderPartial("EditAndDeleteLinks");
-        Html.RenderPartial("RSVPStatus");
-    }
-</p>
-<div id="mapDiv">
-    @{
-        Html.RenderPartial("Map");
-    }
-</div>
+
+@Html.Partial("Map")
+@if (Request.IsAuthenticated)
+{
+    @Html.Partial("EditAndDeleteLinks")
+    @Html.Partial("RSVPStatus")
+}
+else
+{
+    <p>
+        @Html.ActionLink("Log in", "Login", "Account") to RSVP for events.
+    </p>
+}

@@ -1,4 +1,4 @@
-﻿@model NerdDinner.Models.Dinner
+﻿@model NerdDinner.Models.DinnerFormViewModel
 
 @{
     <div>
@@ -6,8 +6,4 @@
         @Html.ActionLink("Delete Dinner", "Delete", new { id = Model.DinnerId })
     </div>
 
-    //if (Model.IsHostedBy(Context.User.Identity.Name))
-    //{
-
-    //}
 }

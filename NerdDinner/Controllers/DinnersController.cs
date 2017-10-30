@@ -40,15 +40,35 @@ namespace NerdDinner.Controllers
         }
 
         // GET: Dinners/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
 
-            var singleDinner = iDinnerRepos.GetDinner(id);
-            if (singleDinner == null)
+            //var singleDinner = iDinnerRepos.GetDinner(id);
+            //if (singleDinner == null)
+            //{
+            //    return View("NotFound");
+            //}
+            //return View(singleDinner);
+
+            Dinner dinner = iDinnerRepos.GetDinner(id ?? 0);
+            if (dinner == null)
             {
-                return View("NotFound");
+                return HttpNotFound();
             }
-            return View(singleDinner);
+            var dinnerModel = new DinnerFormViewModel()
+            {
+                DinnerId = dinner.DinnerId,
+                Title = dinner.Title,
+                Address = dinner.Address,
+                ContactEmail = dinner.ContactEmail,
+                ContactPhone = dinner.ContactPhone,
+                EventDate = dinner.EventDate,
+                Latitude = dinner.Latitude,
+                Longitude = dinner.Longitude,
+                CountryID = dinner.CountryID,
+                Countries = new SelectList(db.Countries, "CountryId", "Name")
+            };
+            return View(dinnerModel);
         }
 
         // GET: Dinners/Create
@@ -154,14 +174,7 @@ namespace NerdDinner.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(DinnerFormViewModel dinnerFormViewModel)//[Bind(Include = "DinnerId,Title,EventDate,ContactEmail,ContactPhone,Address,Country")] Dinner dinner)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    db.Entry(dinner).State = EntityState.Modified;
-            //    db.SaveChanges();
-            //    return RedirectToAction("Index");
-            //}
-            //return View(dinner);
-            //Dinner dinner = Dinner(dinner.DinnerId);
+           
             var dinner = iDinnerRepos.GetDinner(dinnerFormViewModel.DinnerId);
             if (!dinner.IsHostedBy(User.Identity.Name))
             {

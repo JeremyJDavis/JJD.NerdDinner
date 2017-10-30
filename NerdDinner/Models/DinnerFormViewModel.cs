@@ -19,5 +19,12 @@ namespace NerdDinner.Models
         public double Longitude { get; set; }
         public int CountryID { get; set; }
         public SelectList Countries { get; set; }
+
+        public virtual ICollection<RSVP> RSVPs { get; set; } = new List<RSVP>();
+
+        public bool IsUserRegistered(string userEmail)
+        {
+            return RSVPs.Any(r => r.AttendeeName.Equals(userEmail, StringComparison.InvariantCultureIgnoreCase));
+        }
     }
 }
