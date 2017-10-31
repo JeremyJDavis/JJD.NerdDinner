@@ -17,12 +17,12 @@ namespace NerdDinner.Models
         void Delete(Dinner dinner);
         void Save();
         IQueryable<Country> GetCountries();
-        IQueryable<Dinner> FindByLocation(float lat, float lon);
+        IQueryable<Dinner> FindByLocation(float latitude, float longitude);
     }
 
     public class DinnerRepository : IDinnerRepository
     {
-        private NerdDinnersDBContext db = new NerdDinnersDBContext();
+        private readonly NerdDinnersDBContext db = new NerdDinnersDBContext();
 
         //
         // Query Methods

@@ -43,17 +43,10 @@ namespace NerdDinner.Controllers
         public ActionResult Details(int? id)
         {
 
-            //var singleDinner = iDinnerRepos.GetDinner(id);
-            //if (singleDinner == null)
-            //{
-            //    return View("NotFound");
-            //}
-            //return View(singleDinner);
-
             Dinner dinner = iDinnerRepos.GetDinner(id ?? 0);
             if (dinner == null)
             {
-                return HttpNotFound();
+                return View("NotFound");
             }
             var dinnerModel = new DinnerFormViewModel()
             {
