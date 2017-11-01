@@ -165,7 +165,7 @@ namespace NerdDinner.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(DinnerFormViewModel dinnerFormViewModel)//[Bind(Include = "DinnerId,Title,EventDate,ContactEmail,ContactPhone,Address,Country")] Dinner dinner)
+        public ActionResult Edit(DinnerFormViewModel dinnerFormViewModel)
         {
            
             var dinner = iDinnerRepos.GetDinner(dinnerFormViewModel.DinnerId);
